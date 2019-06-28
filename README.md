@@ -1,2 +1,2 @@
 # guajirobot
-A telegram bot for our wedding
+A telegram bot

@@ -4,8 +4,7 @@ const TelegramBot = require('node-telegram-bot-api');
 module.exports = (token) => {
   const bot = new TelegramBot(token, { polling: true });
 
-  const start = async ({ cms, db }) => {
-    debug('Configuring bot....');
+  const setupMsgBehaviour = () => {
     bot.on('message', (msg) => {
       const Hi = "hi";
       console.log(msg)
@@ -13,15 +12,28 @@ module.exports = (token) => {
         bot.sendMessage(msg.chat.id,`Hello ${msg.from.first_name} ${msg.from.last_name}`);
       }
     });
+  };
 
+  const setupOnStart = () => {
     bot.onText(/\/start/, (msg) => {
       bot.sendMessage(msg.chat.id, "Welcome");
     });
+  };
 
+  const setupPictureSending = () => {
     bot.onText(/\/sendpic/, (msg) => {
       bot.sendPhoto(msg.chat.id,'https://cdn0.bodas.net/usuarios/fotos/9/6/0/9/mfb_3469069.jpg?lu=1551276274', {caption : "Besitos de la pareja! \nEstamos deseando verte"} );
     });
+  };
 
+  const setupVenueQuery = () => {
+    bot.onText(/\/venue/, (msg) => {
+      bot.sendLocation(msg.chat.id,44.97108, -104.27719);
+      bot.sendMessage(msg.chat.id, "Here is the point");
+    });
+  };
+
+  const setupTrivia = () => {
     bot.on("callback_query", msg => {
       console.log(JSON.stringify(msg));
     });
@@ -65,11 +77,15 @@ module.exports = (token) => {
         }
       })
     });
+  };
 
-    bot.onText(/\/venue/, (msg) => {
-      bot.sendLocation(msg.chat.id,44.97108, -104.27719);
-      bot.sendMessage(msg.chat.id, "Here is the point");
-    });
+  const start = async ({ cms, db }) => {
+    debug('Configuring bot....');
+    setupMsgBehaviour();
+    setupOnStart();
+    setupPictureSending();
+    setupVenueQuery();
+    setupTrivia();
   };
 
   return { start };

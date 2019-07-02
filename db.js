@@ -1,8 +1,7 @@
 module.exports = () => {
+	const start = async () => Promise.resolve();
 
-  const start = async () => Promise.resolve();
-
-  return {
-    start
-  };
+	return {
+		start,
+	};
 };

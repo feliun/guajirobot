@@ -1,7 +1,7 @@
 const debug = require('debug')('guajirobot:bot');
 const TelegramBot = require('node-telegram-bot-api');
 
-module.exports = (token) => {
+module.exports = ({ token }) => {
   const bot = new TelegramBot(token, { polling: true });
 
   const setupMsgBehaviour = () => {

@@ -4,7 +4,8 @@ const TelegramBot = require('node-telegram-bot-api');
 module.exports = ({ token }) => {
 	const bot = new TelegramBot(token, { polling: true });
 
-	const setupMsgBehaviour = () => {
+	const setupVocabulary = () => {
+    debug('Setting up vocabulary...');
 		bot.on('message', msg => {
 			const Hi = 'hi';
 			console.log(msg);
@@ -80,12 +81,13 @@ module.exports = ({ token }) => {
 	};
 
 	const start = async () => {
-		debug('Configuring bot....');
-		setupMsgBehaviour();
+		console.log('Configuring bot....');
+		setupVocabulary();
 		setupOnStart();
 		setupPictureSending();
 		setupVenueQuery();
-		setupTrivia();
+    setupTrivia();
+    console.log('Bot up and running!');
 	};
 
 	return { start };

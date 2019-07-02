@@ -5,8 +5,8 @@ const initCms = require('./cms');
 const initDb = require('./db');
 
 const start = async () => {
-	const cms = await initCms(config.airtable).start(process.env.AIRTABLE_TOKEN);
-	const db = await initDb().start(config);
+	const cms = await initCms(config.airtable).start();
+	const db = await initDb(config.db).start();
 	await initBot(config.bot).start({ cms, db });
 };
 

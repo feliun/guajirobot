@@ -37,7 +37,14 @@ module.exports = ({ namespace, url, apiKey, base }) => {
 				return resolve();
 			});
 		});
-	};
+  };
+
+  const random = (list) => {
+    if (!list) return null;
+    return list[Math.floor(Math.random() * list.length)];
+  };
+
+  const lookupDictionary = (language) => (word) => random(dictionary[language] && dictionary[language][word]);
 
 	const start = async () => {
 		Airtable.configure({
@@ -47,7 +54,10 @@ module.exports = ({ namespace, url, apiKey, base }) => {
 		airtable = Airtable.base(base);
 		await loadDictionary();
 		return {
-			loadDictionary,
+      dictionary: {
+        load: loadDictionary,
+        lookup: lookupDictionary
+      }
 		};
 	};
 

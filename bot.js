@@ -2,16 +2,19 @@ const debug = require('debug')('guajirobot:bot');
 const TelegramBot = require('node-telegram-bot-api');
 
 module.exports = ({ token }) => {
-	const bot = new TelegramBot(token, { polling: true });
+  const bot = new TelegramBot(token, { polling: true });
 
-	const setupVocabulary = () => {
+  const language = 'ES';
+
+	const setupVocabulary = (cms) => {
 		debug('Setting up vocabulary...');
 		bot.on('message', msg => {
-			const Hi = 'hi';
-			console.log(msg);
-			if (msg.text.toString().toLowerCase().indexOf(Hi) === 0) {
-				bot.sendMessage(msg.chat.id, `Hello ${msg.from.first_name} ${msg.from.last_name}`);
-			}
+      const input = msg.text.toString().toLowerCase();
+      debug(`Looking up for input ${input} in language ${language}...`);
+      const match = cms.dictionary.lookup(language)(input);
+			if (match) {
+        bot.sendMessage(msg.chat.id, match);
+      }
 		});
 	};
 
@@ -80,9 +83,9 @@ module.exports = ({ token }) => {
 		});
 	};
 
-	const start = async () => {
+	const start = async ({ cms }) => {
 		console.log('Configuring bot....');
-		setupVocabulary();
+		setupVocabulary(cms);
 		setupOnStart();
 		setupPictureSending();
 		setupVenueQuery();

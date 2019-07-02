@@ -5,7 +5,7 @@ module.exports = ({ token }) => {
 	const bot = new TelegramBot(token, { polling: true });
 
 	const setupVocabulary = () => {
-    debug('Setting up vocabulary...');
+		debug('Setting up vocabulary...');
 		bot.on('message', msg => {
 			const Hi = 'hi';
 			console.log(msg);
@@ -86,8 +86,8 @@ module.exports = ({ token }) => {
 		setupOnStart();
 		setupPictureSending();
 		setupVenueQuery();
-    setupTrivia();
-    console.log('Bot up and running!');
+		setupTrivia();
+		console.log('Bot up and running!');
 	};
 
 	return { start };

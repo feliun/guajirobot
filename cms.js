@@ -9,8 +9,10 @@ module.exports = ({ namespace, url, apiKey, base }) => {
 		let entries = [];
 
 		const unique = list => [...new Set(list)];
-		const clean = list => list.map(item => item);
 		const byLanguage = language => ({ Language }) => Language === language;
+		const polish = item => item.replace(/!|\?|¿|¡|,/g, '');
+		const toLowerCase = str => str.toLowerCase();
+		const clean = list => list.map(polish).map(toLowerCase);
 		const merge = (total, obj) => ({ ...total, ...obj });
 
 		const processVocabulary = language => entryList =>

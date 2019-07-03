@@ -3,13 +3,28 @@ const Airtable = require('airtable');
 
 module.exports = ({ namespace, url, apiKey, base }) => {
 	let airtable;
-	let dictionary = {};
+	const dictionary = {};
 
 	const loadDictionary = async () => {
 		let entries = [];
 
 		const unique = list => [...new Set(list)];
 		const clean = list => list.map(item => item);
+		const byLanguage = language => ({ Language }) => Language === language;
+		const merge = (total, obj) => ({ ...total, ...obj });
+
+		const processVocabulary = language => entryList =>
+			entryList
+				.filter(byLanguage(language))
+				.map(({ Input, Output }) => ({
+					inputList: clean(unique(Input.split('\n'))),
+					outputList: clean(unique(Output.split('\n'))),
+				}))
+				.map(({ inputList, outputList }) => inputList.reduce((total, input) => ({
+					...total,
+					[input]: outputList,
+				}), {}))
+				.reduce(merge, {});
 
 		return new Promise((resolve, reject) => {
 			airtable(namespace).select({
@@ -21,30 +36,23 @@ module.exports = ({ namespace, url, apiKey, base }) => {
 				fetchNextPage();
 			}, err => {
 				if (err) return reject(err);
-				dictionary = entries.reduce((totalEntries, entry) => {
-					const { Language, Input, Output } = entry;
-					const inputList = clean(unique(Input.split('\n')));
-					const outputList = clean(unique(Output.split('\n')));
-					return inputList.reduce((total, input) => ({
-						...totalEntries,
-						[Language]: {
-							...total[Language],
-							[input]: outputList,
-						},
-					}), dictionary);
-				}, {});
+				const processSpanish = processVocabulary('ES');
+				const processEnglish = processVocabulary('EN');
+
+				dictionary.ES = processSpanish(entries);
+				dictionary.EN = processEnglish(entries);
 				debug(dictionary);
 				return resolve();
 			});
 		});
-  };
+	};
 
-  const random = (list) => {
-    if (!list) return null;
-    return list[Math.floor(Math.random() * list.length)];
-  };
+	const random = list => {
+		if (!list) return null;
+		return list[Math.floor(Math.random() * list.length)];
+	};
 
-  const lookupDictionary = (language) => (word) => random(dictionary[language] && dictionary[language][word]);
+	const lookupDictionary = language => word => random(dictionary[language] && dictionary[language][word]);
 
 	const start = async () => {
 		Airtable.configure({
@@ -54,10 +62,10 @@ module.exports = ({ namespace, url, apiKey, base }) => {
 		airtable = Airtable.base(base);
 		await loadDictionary();
 		return {
-      dictionary: {
-        load: loadDictionary,
-        lookup: lookupDictionary
-      }
+			dictionary: {
+				load: loadDictionary,
+				lookup: lookupDictionary,
+			},
 		};
 	};
 

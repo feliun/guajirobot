@@ -2,19 +2,19 @@ const debug = require('debug')('guajirobot:bot');
 const TelegramBot = require('node-telegram-bot-api');
 
 module.exports = ({ token }) => {
-  const bot = new TelegramBot(token, { polling: true });
+	const bot = new TelegramBot(token, { polling: true });
 
-  const language = 'ES';
+	const language = 'ES';
 
-	const setupVocabulary = (cms) => {
+	const setupVocabulary = cms => {
 		debug('Setting up vocabulary...');
 		bot.on('message', msg => {
-      const input = msg.text.toString().toLowerCase();
-      debug(`Looking up for input ${input} in language ${language}...`);
-      const match = cms.dictionary.lookup(language)(input);
+			const input = msg.text.toString().toLowerCase();
+			debug(`Looking up for input ${input} in language ${language}...`);
+			const match = cms.dictionary.lookup(language)(input);
 			if (match) {
-        bot.sendMessage(msg.chat.id, match);
-      }
+				bot.sendMessage(msg.chat.id, match);
+			}
 		});
 	};
 

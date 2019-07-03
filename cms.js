@@ -28,6 +28,8 @@ module.exports = ({ namespace, url, apiKey, base }) => {
 				}), {}))
 				.reduce(merge, {});
 
+		console.log('Starting dictionary reload...');
+
 		return new Promise((resolve, reject) => {
 			airtable(namespace).select({
 				maxRecords: 100,

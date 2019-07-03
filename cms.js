@@ -30,6 +30,9 @@ module.exports = ({ namespace, url, apiKey, base }) => {
 
 		console.log('Starting dictionary reload...');
 
+		const english = 'EN';
+		const spanish = 'ES';
+
 		return new Promise((resolve, reject) => {
 			airtable(namespace).select({
 				maxRecords: 100,
@@ -40,11 +43,11 @@ module.exports = ({ namespace, url, apiKey, base }) => {
 				fetchNextPage();
 			}, err => {
 				if (err) return reject(err);
-				const processSpanish = processVocabulary('ES');
-				const processEnglish = processVocabulary('EN');
+				const processSpanish = processVocabulary(spanish);
+				const processEnglish = processVocabulary(english);
 
-				dictionary.ES = processSpanish(entries);
-				dictionary.EN = processEnglish(entries);
+				dictionary[spanish] = processSpanish(entries);
+				dictionary[english] = processEnglish(entries);
 				debug(dictionary);
 				return resolve();
 			});

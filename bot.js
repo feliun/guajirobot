@@ -20,7 +20,7 @@ module.exports = ({ token }) => {
 
 	const setupOnStart = () => {
 		bot.onText(/\/start/, msg => {
-			bot.sendMessage(msg.chat.id, 'Welcome');
+			bot.sendMessage(msg.chat.id, 'Welcome to the V&F wedding bot! Bienvenido/a al bot de la boda de V&F');
 		});
 	};
 

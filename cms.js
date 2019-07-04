@@ -13,11 +13,13 @@ module.exports = ({ namespace, url, apiKey, base }) => {
 		const polish = item => item.replace(/!|\?|¿|¡|,/g, '');
 		const toLowerCase = str => str.toLowerCase();
 		const clean = list => list.map(polish).map(toLowerCase);
+		const isFilled = item => item.Input && item.Output && item.Language;
 		const merge = (total, obj) => ({ ...total, ...obj });
 
 		const processVocabulary = language => entryList =>
 			entryList
 				.filter(byLanguage(language))
+				.filter(isFilled)
 				.map(({ Input, Output }) => ({
 					inputList: clean(unique(Input.split('\n'))),
 					outputList: clean(unique(Output.split('\n'))),

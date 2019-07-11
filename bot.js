@@ -7,7 +7,7 @@ module.exports = ({ token }) => {
 	// const defaultLanguage = 'ES';
 
 
-	const start = async ({ cms }) => {
+	const start = async ({ controller }) => {
 		// const languageCache = (database => {
 		// 	const languageByUserId = {};
 
@@ -23,12 +23,11 @@ module.exports = ({ token }) => {
 
 		const setupVocabulary = () => {
 			debug('Setting up vocabulary...');
-			bot.on('message', msg => {
+			bot.on('message', async msg => {
 				const input = msg.text.toString().toLowerCase();
-				const userData = msg.from;
-				const language = userData.language_code.toUpperCase();
-				debug(`Looking up for input ${input} in language ${language}...`);
-				const match = cms.dictionary.lookup(language)(input);
+				const userId = msg.from.id;
+				debug(`Message received for user ${userId}...`);
+				const match = await controller.findMatch(userId, input);
 				if (match) {
 					bot.sendMessage(msg.chat.id, match);
 				}

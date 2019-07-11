@@ -7,7 +7,16 @@
     "airtable": "^0.6.0",
     "debug": "^4.1.1",
     "dotenv": "^8.0.0",
+    "mongodb": "^3.2.7",
     "node-telegram-bot-api": "^0.30.0"
+  },
+  "scripts": {
+    "start": "node index.js",
+    "manifest": "node_modules/make-manifest/bin/make-manifest",
+    "test": "echo \"No tests implemented yet, shame on me\" && exit 0",
+    "lint": "eslint .",
+    "qa": "npm run lint && npm run test",
+    "docker": "docker-compose --file docker-compose.yml up -d --force-recreate --build"
   },
   "devDependencies": {
     "eslint": "^4.19.1",
@@ -16,13 +25,6 @@
     "eslint-plugin-mocha": "^5.2.0",
     "husky": "^3.0.0",
     "make-manifest": "^1.0.1"
-  },
-  "scripts": {
-    "start": "node index.js",
-    "manifest": "node_modules/make-manifest/bin/make-manifest",
-    "test": "echo \"No tests implemented yet, shame on me\" && exit 0",
-    "lint": "eslint .",
-    "qa": "npm run lint && npm run test"
   },
   "husky": {
     "hooks": {

@@ -1,0 +1,23 @@
+version: '3.1'
+
+services:
+  mongo:
+    build: ./mongo
+    image: mongo
+    environment:
+      - MONGO_DB_APP_PASSWORD=node
+      - MONGO_DB_APP_USERNAME=node
+      - MONGO_DB_APP_DATABASE=guajirobot
+    ports:
+      - "27017:27017"
+    healthcheck:
+      test: ["CMD", "echo", "show dbs", "|", "mongo"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    command: mongod --smallfiles
+
+networks:
+  default:
+    external:
+      name: local

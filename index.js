@@ -17,4 +17,9 @@ const start = async () => {
 	}, DICTIONARY_FREQUENCY);
 };
 
-start();
+try {
+	start();
+} catch (err) {
+	console.log('Error starting up!', err);
+	process.exit(1);
+}

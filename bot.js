@@ -27,7 +27,12 @@ module.exports = ({ token }) => {
 				const input = msg.text.toString().toLowerCase();
 				const userId = msg.from.id;
 				debug(`Message received for user ${userId}...`);
-				const match = await controller.findMatch(userId, input);
+				try {
+					const match = await controller.findMatch(userId, input);
+				} catch (err) {
+					console.error(`Error on message handler: ${err.message}`);
+					// send default message as non found
+				}
 				if (match) {
 					bot.sendMessage(msg.chat.id, match);
 				}

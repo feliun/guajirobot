@@ -16,7 +16,12 @@ module.exports = config => {
 			await db.collection('audit').insertOne(payload);
 		};
 
-		return { updateProfile, audit };
+		const storeUnmatched = async payload => {
+			debug('Storing unmatched output for given input...');
+			await db.collection('unmatched').insertOne(payload);
+		};
+
+		return { updateProfile, audit, storeUnmatched };
 	};
 
 	return {

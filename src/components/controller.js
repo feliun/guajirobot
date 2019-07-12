@@ -21,7 +21,14 @@ module.exports = () => {
 		const findMatch = async input => {
 			debug(`Looking up for input ${input} for user ${userId}...`);
 			const language = 'ES';
-			return cms.dictionary.lookup(language)(input);
+			const result = cms.dictionary.lookup(language)(input);
+			if (result) return result;
+			try {
+				await db.storeUnmatched({ language, input, userId });
+			} catch (e) {
+				console.error(`Error storing unmatched input ${input}`);
+			}
+			return null;
 		};
 
 		return {

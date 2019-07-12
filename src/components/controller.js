@@ -25,6 +25,7 @@ module.exports = () => {
 			if (result) return result;
 			try {
 				await db.storeUnmatched({ language, input, userId });
+				return cms.dictionary.lookup(language)('fallback');
 			} catch (e) {
 				console.error(`Error storing unmatched input ${input}`);
 			}

@@ -21,6 +21,8 @@ module.exports = ({ token }) => {
 		// 	return { updateUser, getLanguageByUserId };
 		// })(db);
 
+		const reply = (chatId, message, options = {}) => bot.sendMessage(chatId, message, options);
+
 		const setupVocabulary = () => {
 			debug('Setting up vocabulary...');
 			bot.on('message', async msg => {
@@ -32,11 +34,8 @@ module.exports = ({ token }) => {
 					match = await controller(userId).findMatch(input);
 				} catch (err) {
 					console.error(`Error on message handler: ${err.message}`);
-					// send default message as non found
 				}
-				if (match) {
-					bot.sendMessage(msg.chat.id, match);
-				}
+				return match && reply(msg.chat.id, match);
 			});
 		};
 

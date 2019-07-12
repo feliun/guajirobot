@@ -26,9 +26,10 @@ module.exports = ({ token }) => {
 			bot.on('message', async msg => {
 				const input = msg.text.toString().toLowerCase();
 				const userId = msg.from.id;
+				let match;
 				debug(`Message received for user ${userId}...`);
 				try {
-					const match = await controller.findMatch(userId, input);
+					match = await controller.findMatch(userId, input);
 				} catch (err) {
 					console.error(`Error on message handler: ${err.message}`);
 					// send default message as non found

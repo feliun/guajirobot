@@ -1,9 +1,9 @@
 require('dotenv').config();
 const config = require('./config');
-const initBot = require('./bot');
-const initCms = require('./cms');
-const initDb = require('./db');
-const initController = require('./controller');
+const initBot = require('./src/components/bot/index.js');
+const initCms = require('./src/components/cms');
+const initDb = require('./src/components/db');
+const initController = require('./src/components/controller');
 
 const DICTIONARY_FREQUENCY = 5 * 60 * 1000; // 5 minutes
 

@@ -1,4 +1,4 @@
-require('dotenv').config();
+require('dotenv').config({ path: `.env.${process.env.SERVICE_ENV || 'local'}` });
 const config = require('./config');
 const initBot = require('./src/components/bot/index.js');
 const initCms = require('./src/components/cms');

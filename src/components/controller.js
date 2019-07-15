@@ -7,7 +7,7 @@ module.exports = () => {
 				userId,
 				fn: fn.name,
 				args: [...args],
-				timestamp: Date.now(),
+				timestamp: new Date(),
 			};
 			try {
 				await db.audit(payload);
@@ -24,7 +24,7 @@ module.exports = () => {
 			const result = cms.dictionary.lookup(language)(input);
 			if (result) return result;
 			try {
-				await db.storeUnmatched({ language, input, userId });
+				await db.storeUnmatched({ language, input, userId, timestamp: new Date() });
 				return cms.dictionary.lookup(language)('fallback');
 			} catch (e) {
 				console.error(`Error storing unmatched input ${input}`);

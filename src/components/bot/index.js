@@ -27,11 +27,12 @@ module.exports = ({ token }) => {
 			debug('Setting up vocabulary...');
 			bot.on('message', async msg => {
 				const input = msg.text.toString().toLowerCase();
-				const userId = msg.from.id;
+				const user = msg.from;
+				const userId = user.id;
 				let match;
 				debug(`Message received for user ${userId}...`);
 				try {
-					match = await controller(userId).findMatch(input);
+					match = await controller(user).findMatch(input);
 				} catch (err) {
 					console.error(`Error on message handler: ${err.message}`);
 				}

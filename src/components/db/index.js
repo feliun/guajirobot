@@ -9,10 +9,18 @@ module.exports = config => {
 		db.collection('audit').createIndex({ fn: 1, timestamp: 1, userId: 1 });
 		db.collection('unmatched').createIndex({ language: 1, userId: 1 });
 
-		const updateProfile = async () => {
+		const updateProfile = async profile => {
 			debug('Updating profile...');
-			await db.collection('users').insertOne({ id: 1, name: 'Roger' });
-			return Promise.resolve();
+			const input = {
+				id: profile.id,
+				username: profile.username,
+				isBot: profile.is_bot,
+				firstName: profile.first_name,
+				lastName: profile.last_name,
+				languageCode: profile.language_code,
+			};
+			const response = await db.collection('users').findOneAndUpdate({ id: input.id }, { $set: input }, { upsert: true, returnNewDocument: true });
+			return response;
 		};
 
 		const audit = async payload => {

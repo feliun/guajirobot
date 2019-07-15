@@ -4,7 +4,7 @@ module.exports = {
 	},
 	db: {
 		url: process.env.MONGO_URL || 'mongodb://user:pass@localhost:27017/guajirobot',
-		db: 'guajirobot',
+		db: process.env.MONGO_DB || 'guajirobot',
 		options: { useNewUrlParser: true },
 	},
 	airtable: {

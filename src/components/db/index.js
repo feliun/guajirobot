@@ -5,6 +5,7 @@ module.exports = config => {
 	const start = async () => {
 		const mongo = await MongoClient.connect(config.url, config.options);
 		const db = mongo.db(config.db);
+		debug('Configuring db....');
 		db.collection('users').createIndex({ id: 1 }, { unique: true });
 		db.collection('audit').createIndex({ fn: 1, timestamp: 1, userId: 1 });
 		db.collection('unmatched').createIndex({ language: 1, userId: 1 });

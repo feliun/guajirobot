@@ -1,3 +1,4 @@
+const removeAccents = require('remove-accents');
 const debug = require('debug')('guajirobot:cms');
 const Airtable = require('airtable');
 
@@ -6,7 +7,8 @@ module.exports = ({ namespace, url, apiKey, base }) => {
 	const dictionary = {};
 	const unique = list => [...new Set(list)];
 	const byLanguage = language => ({ Language }) => Language === language;
-	const polish = item => item.replace(/!|\?|¿|¡|,/g, '');
+	const removeSymbols = item => item.replace(/!|\?|¿|¡|,/g, '');
+	const polish = item => removeSymbols(removeAccents(item));
 	const toLowerCase = str => str.toLowerCase();
 	const cleanList = list => list.map(polish).map(toLowerCase);
 	const merge = (total, obj) => ({ ...total, ...obj });

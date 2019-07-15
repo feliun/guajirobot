@@ -4,25 +4,24 @@ const Airtable = require('airtable');
 module.exports = ({ namespace, url, apiKey, base }) => {
 	let airtable;
 	const dictionary = {};
+	const unique = list => [...new Set(list)];
+	const byLanguage = language => ({ Language }) => Language === language;
+	const polish = item => item.replace(/!|\?|¿|¡|,/g, '');
+	const toLowerCase = str => str.toLowerCase();
+	const cleanList = list => list.map(polish).map(toLowerCase);
+	const merge = (total, obj) => ({ ...total, ...obj });
 
 	const loadDictionary = async () => {
 		let entries = [];
-
-		const unique = list => [...new Set(list)];
-		const byLanguage = language => ({ Language }) => Language === language;
-		const polish = item => item.replace(/!|\?|¿|¡|,/g, '');
-		const toLowerCase = str => str.toLowerCase();
-		const clean = list => list.map(polish).map(toLowerCase);
 		const isFilled = item => item.Input && item.Output && item.Language;
-		const merge = (total, obj) => ({ ...total, ...obj });
 
 		const processVocabulary = language => entryList =>
 			entryList
 				.filter(byLanguage(language))
 				.filter(isFilled)
 				.map(({ Input, Output }) => ({
-					inputList: clean(unique(Input.split('\n'))),
-					outputList: clean(unique(Output.split('\n'))),
+					inputList: cleanList(unique(Input.split('\n'))),
+					outputList: cleanList(unique(Output.split('\n'))),
 				}))
 				.map(({ inputList, outputList }) => inputList.reduce((total, input) => ({
 					...total,
@@ -61,7 +60,7 @@ module.exports = ({ namespace, url, apiKey, base }) => {
 		return list[Math.floor(Math.random() * list.length)];
 	};
 
-	const lookupDictionary = language => word => random(dictionary[language] && dictionary[language][word]);
+	const lookupDictionary = language => input => random(dictionary[language] && dictionary[language][polish(input)]);
 
 	const start = async () => {
 		Airtable.configure({

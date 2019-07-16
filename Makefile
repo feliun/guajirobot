@@ -3,10 +3,7 @@ DOCKER_HOST=quay.io
 DOCKER_ACCOUNT=feliun
 
 install:
-	@nvm install
-	@nvm use
-	@node --version
-	@npm install --only=production
+	@echo "No installation needed as the service is built inside Docker..."
 
 ensure-dependencies:
 	@npm run docker

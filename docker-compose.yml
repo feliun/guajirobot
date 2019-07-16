@@ -3,6 +3,7 @@ version: '3.1'
 services:
   mongo:
     build: ./mongo
+    container_name: mongo
     image: mongo
     environment:
       - MONGO_DB_APP_PASSWORD=node

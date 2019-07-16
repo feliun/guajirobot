@@ -16,7 +16,7 @@ qa:
 	@docker run --name $(SERVICE) --env SERVICE_ENV=local --rm --entrypoint npm $(SERVICE):$(TRAVIS_BUILD_NUMBER) run qa --
 
 start:
-	@docker run -d --name $(SERVICE) --env BOT_TOKEN=$(BOT_TOKEN) $(SERVICE):$(TRAVIS_BUILD_NUMBER)
+	@docker run -d --name $(SERVICE) $(SERVICE):$(TRAVIS_BUILD_NUMBER)
 
 package:
 	@docker build --tag $(SERVICE):$(TRAVIS_BUILD_NUMBER) .
@@ -25,6 +25,6 @@ package:
 archive: start
 	@docker login -u=$(DOCKER_USERNAME) -p=$(DOCKER_PASSWORD) $(DOCKER_HOST)
 	docker ps
-	@CONTAINER_ID=`docker ps | grep $(SERVICE) | awk '{print $$1}'` && \
+	@CONTAINER_ID=`docker ps -l | grep $(SERVICE) | awk '{print $$1}'` && \
 	docker commit $$CONTAINER_ID $(DOCKER_HOST)/$(DOCKER_ACCOUNT)/$(SERVICE)
 	docker push $(DOCKER_HOST)/$(DOCKER_ACCOUNT)/$(SERVICE)

@@ -16,10 +16,10 @@ brand:
 	@cat ./manifest.json
 
 qa:
-	@docker run --name $(SERVICE) --env SERVICE_ENV=local --rm --network=local --entrypoint npm $(SERVICE):$(TRAVIS_BUILD_NUMBER) run qa --
+	@docker run --name $(SERVICE) --env SERVICE_ENV=local --rm --entrypoint npm $(SERVICE):$(TRAVIS_BUILD_NUMBER) run qa --
 
 start:
-	@docker run -d --name $(SERVICE) --env BOT_TOKEN=$(BOT_TOKEN) --network=local $(SERVICE):$(TRAVIS_BUILD_NUMBER)
+	@docker run -d --name $(SERVICE) --env BOT_TOKEN=$(BOT_TOKEN) $(SERVICE):$(TRAVIS_BUILD_NUMBER)
 
 package:
 	@docker build --tag $(SERVICE):$(TRAVIS_BUILD_NUMBER) .

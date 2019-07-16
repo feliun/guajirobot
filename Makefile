@@ -4,9 +4,9 @@ DOCKER_ACCOUNT=feliun
 
 install:
 	@nvm install
-  @nvm use
-  @node --version
-  @npm install --only=production
+	@nvm use
+	@node --version
+	@npm install --only=production
 
 ensure-dependencies:
 	@npm run docker

@@ -15,6 +15,7 @@
     "local": "SERVICE_ENV=local node index.js",
     "dev": "SERVICE_ENV=dev node index.js",
     "live": "SERVICE_ENV=live node index.js",
+    "start": "node index.js",
     "manifest": "node_modules/make-manifest/bin/make-manifest",
     "test": "echo \"No tests implemented yet, shame on me\" && exit 0",
     "lint": "eslint .",

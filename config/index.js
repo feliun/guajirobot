@@ -8,9 +8,11 @@ module.exports = {
 		options: { useNewUrlParser: true },
 	},
 	airtable: {
-		namespace: 'Content',
-		url: 'https://api.airtable.com',
 		apiKey: process.env.AIRTABLE_KEY || 'airtablekey',
 		base: process.env.AIRTABLE_BASE || 'airtablebase',
+		url: 'https://api.airtable.com',
+		namespaces: {
+			dictionary: 'Content',
+		},
 	},
 };

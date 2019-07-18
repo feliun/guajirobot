@@ -1,4 +1,3 @@
-const debug = require('debug')('guajirobot:bot');
 const TelegramBot = require('node-telegram-bot-api');
 const { join } = require('path');
 const handlerConstructors = require('require-all')({
@@ -44,14 +43,6 @@ module.exports = ({ token }) => {
 		const setupLanguage = () => {
 			bot.onText(/\/language/, msg => {
 				languageQuery(msg.chat.id);
-			});
-		};
-
-		const setupOnStart = () => {
-			bot.onText(/\/start/, msg => {
-				console.log(JSON.stringify(msg));
-				// bot.sendMessage(msg.chat.id, 'Welcome to the V&F wedding bot! Bienvenido/a al bot de la boda de V&F');
-				// languageQuery(msg.chat.id);
 			});
 		};
 
@@ -115,9 +106,8 @@ module.exports = ({ token }) => {
 		};
 
 		console.log('Configuring bot....');
-		debug('Setting up vocabulary...');
 		bot.on('message', handlers.dialog);
-		setupOnStart();
+		bot.onText(/\/start/, handlers.start);
 		setupLanguage();
 		setupPictureSending();
 		setupVenueQuery();

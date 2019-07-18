@@ -1,44 +1,21 @@
 const debug = require('debug')('guajirobot:bot');
 const TelegramBot = require('node-telegram-bot-api');
+const { join } = require('path');
+const handlerConstructors = require('require-all')({
+	dirname: join(__dirname, 'handlers'),
+});
 
 module.exports = ({ token }) => {
 	const bot = new TelegramBot(token, { polling: true });
 
 	// const defaultLanguage = 'ES';
 
-
 	const start = async ({ controller }) => {
-		// const languageCache = (database => {
-		// 	const languageByUserId = {};
-
-		// 	const updateUser = async ({ user, language }) => {
-		// 		await database.updateProfile({ ...user, language });
-		// 		languageByUserId[user.id] = language;
-		// 	};
-
-		// 	const getLanguageByUserId = userId => languageByUserId[userId] || defaultLanguage;
-
-		// 	return { updateUser, getLanguageByUserId };
-		// })(db);
-
-		const reply = (chatId, message, options = {}) => bot.sendMessage(chatId, message, options);
-
-		const setupVocabulary = () => {
-			debug('Setting up vocabulary...');
-			bot.on('message', async msg => {
-				const input = msg.text.toString().toLowerCase();
-				const user = msg.from;
-				const userId = user.id;
-				let match;
-				debug(`Message received for user ${userId}...`);
-				try {
-					match = await controller(user).findMatch(input);
-				} catch (err) {
-					console.error(`Error on message handler: ${err.message}`);
-				}
-				return match && reply(msg.chat.id, match);
-			});
-		};
+		const botSpeaker = { reply: bot.sendMessage.bind(bot), sendPhoto: bot.sendPhoto.bind(bot) };
+		const handlers = Object.keys(handlerConstructors).reduce((total, handlerName) => ({
+			...total,
+			[handlerName]: handlerConstructors[handlerName](controller, botSpeaker),
+		}), {});
 
 		const languageQuery = chatId => {
 			bot.on('callback_query', async msg => {
@@ -138,7 +115,8 @@ module.exports = ({ token }) => {
 		};
 
 		console.log('Configuring bot....');
-		setupVocabulary();
+		debug('Setting up vocabulary...');
+		bot.on('message', handlers.dialog);
 		setupOnStart();
 		setupLanguage();
 		setupPictureSending();

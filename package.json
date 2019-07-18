@@ -9,7 +9,8 @@
     "dotenv": "^8.0.0",
     "mongodb": "^3.2.7",
     "node-telegram-bot-api": "^0.30.0",
-    "remove-accents": "^0.4.2"
+    "remove-accents": "^0.4.2",
+    "require-all": "^3.0.0"
   },
   "scripts": {
     "local": "SERVICE_ENV=local node index.js",

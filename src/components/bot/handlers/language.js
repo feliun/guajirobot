@@ -1,2 +1,23 @@
-module.exports = () => async () => {
+module.exports = (controller, bot) => async msg => {
+	bot.on('callback_query', async message => {
+		console.log(JSON.stringify(message));
+		// const language = 'EN';
+		// const user = {};
+		// await languageCache.updateUser({ ...user, language });
+	});
+
+	bot.sendMessage(msg.chat.id, 'Elige tu idioma / Please choose your language', {
+		reply_markup: {
+			inline_keyboard: [
+				[{
+					text: 'Español',
+					callback_data: 'language:ES',
+				}],
+				[{
+					text: 'English',
+					callback_data: 'language:EN',
+				}],
+			],
+		},
+	});
 };

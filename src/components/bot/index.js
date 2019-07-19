@@ -15,36 +15,6 @@ module.exports = ({ token }) => {
 			[handlerName]: handlerConstructors[handlerName](controller, bot),
 		}), {});
 
-		const languageQuery = chatId => {
-			bot.on('callback_query', async msg => {
-				console.log(JSON.stringify(msg));
-				// const language = 'EN';
-				// const user = {};
-				// await languageCache.updateUser({ ...user, language });
-			});
-
-			bot.sendMessage(chatId, 'Elige tu idioma / Please choose your language', {
-				reply_markup: {
-					inline_keyboard: [
-						[{
-							text: 'Español',
-							callback_data: 'language:ES',
-						}],
-						[{
-							text: 'English',
-							callback_data: 'language:EN',
-						}],
-					],
-				},
-			});
-		};
-
-		const setupLanguage = () => {
-			bot.onText(/\/language/, msg => {
-				languageQuery(msg.chat.id);
-			});
-		};
-
 		const setupPictureSending = () => {
 			bot.onText(/\/sendpic/, msg => {
 				bot.sendPhoto(msg.chat.id, 'https://cdn0.bodas.net/usuarios/fotos/9/6/0/9/mfb_3469069.jpg?lu=1551276274', { caption: 'Besitos de la pareja! \nEstamos deseando verte' });
@@ -106,7 +76,7 @@ module.exports = ({ token }) => {
 
 		console.log('Configuring bot....');
 		bot.onText(/\/start/, handlers.start);
-		setupLanguage();
+		bot.onText(/\/language/, handlers.language);
 		setupPictureSending();
 		setupVenueQuery();
 		setupTrivia();

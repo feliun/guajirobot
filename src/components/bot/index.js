@@ -5,15 +5,14 @@ const handlerConstructors = require('require-all')({
 });
 
 module.exports = ({ token }) => {
-	const bot = new TelegramBot(token, { polling: true });
+	const bot = new TelegramBot(token, { polling: true, onlyFirstMatch: true });
 
 	// const defaultLanguage = 'ES';
 
 	const start = async ({ controller }) => {
-		const botSpeaker = { reply: bot.sendMessage.bind(bot), sendPhoto: bot.sendPhoto.bind(bot) };
 		const handlers = Object.keys(handlerConstructors).reduce((total, handlerName) => ({
 			...total,
-			[handlerName]: handlerConstructors[handlerName](controller, botSpeaker),
+			[handlerName]: handlerConstructors[handlerName](controller, bot),
 		}), {});
 
 		const languageQuery = chatId => {
@@ -106,12 +105,12 @@ module.exports = ({ token }) => {
 		};
 
 		console.log('Configuring bot....');
-		bot.on('message', handlers.dialog);
 		bot.onText(/\/start/, handlers.start);
 		setupLanguage();
 		setupPictureSending();
 		setupVenueQuery();
 		setupTrivia();
+		bot.on('message', handlers.dialog);
 		console.log('Bot up and running!');
 	};
 

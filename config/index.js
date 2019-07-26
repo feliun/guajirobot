@@ -12,7 +12,7 @@ module.exports = {
 		base: process.env.AIRTABLE_BASE || 'airtablebase',
 		url: 'https://api.airtable.com',
 		namespaces: {
-			dictionary: 'Content',
+			dictionary: 'Dictionary',
 		},
 	},
 };

@@ -5,6 +5,7 @@ module.exports = async (airtable, namespace) => {
 	const dictionary = {};
 	const unique = list => [...new Set(list)];
 	const byLanguage = language => ({ Language }) => Language === language;
+	const byCategory = category => ({ Category }) => Category === category;
 	const removeSymbols = item => item.replace(/!|\?|¿|¡|,/g, '');
 	const polish = item => removeSymbols(removeAccents(item));
 	const toLowerCase = str => str.toLowerCase();
@@ -17,6 +18,7 @@ module.exports = async (airtable, namespace) => {
 
 		const processVocabulary = language => entryList =>
 			entryList
+				.filter(byCategory('Vocabulary'))
 				.filter(byLanguage(language))
 				.filter(isFilled)
 				.map(({ Input, Output }) => ({

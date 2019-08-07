@@ -15,17 +15,29 @@ module.exports = async (airtable, namespace) => {
 		let entries = [];
 		const isFilled = item => item.Input && item.Output && item.Language;
 
+		const extractionByCategory = {
+			Vocabulary: item => cleanList(unique(item.Output.split('\n'))),
+			Coordinates: item => ({
+				captions: cleanList(unique(item.Output.split('\n'))),
+				longitude: item.Longitude,
+				latitude: item.Latitude,
+			}),
+		};
+
 		const processVocabulary = language => entryList =>
 			entryList
 				.filter(byLanguage(language))
 				.filter(isFilled)
-				.map(({ Input, Output, Category }) => ({
-					inputList: cleanList(unique(Input.split('\n'))),
-					outputData: {
-						data: cleanList(unique(Output.split('\n'))),
-						category: Category,
-					},
-				}))
+				.map(item => {
+					const { Input, Category } = item;
+					return {
+						inputList: cleanList(unique(Input.split('\n'))),
+						outputData: {
+							category: Category,
+							data: extractionByCategory[Category](item),
+						},
+					};
+				})
 				.map(({ inputList, outputData }) => inputList.reduce((total, input) => ({
 					...total,
 					[input]: outputData,
@@ -52,7 +64,7 @@ module.exports = async (airtable, namespace) => {
 
 				dictionary[spanish] = processSpanish(entries);
 				dictionary[english] = processEnglish(entries);
-				debug(dictionary);
+				debug(JSON.stringify(dictionary, null, 2));
 				return resolve();
 			});
 		});

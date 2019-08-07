@@ -12,10 +12,9 @@ module.exports = (controller, bot) => async msg => {
 			const choice = random(options);
 			bot.sendMessage(msg.chat.id, choice);
 		},
-		Coordinates: ([coordinates, caption]) => {
-			const [latitude, longitude] = coordinates;
+		Coordinates: ({ captions, longitude, latitude }) => {
 			bot.sendLocation(msg.chat.id, latitude, longitude);
-			bot.sendMessage(msg.chat.id, caption);
+			bot.sendMessage(msg.chat.id, random(captions));
 		},
 	};
 

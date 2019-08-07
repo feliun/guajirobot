@@ -11,10 +11,8 @@ module.exports = ({ url, apiKey, base, namespaces }) => {
 			apiKey,
 		});
 		airtable = Airtable.base(base);
-		const dictionary = await initDictionary(airtable, namespaces.dictionary);
-		return {
-			dictionary,
-		};
+		const api = await initDictionary(airtable, namespaces.dictionary);
+		return api;
 	};
 
 	return {

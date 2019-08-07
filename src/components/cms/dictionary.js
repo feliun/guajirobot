@@ -5,7 +5,6 @@ module.exports = async (airtable, namespace) => {
 	const dictionary = {};
 	const unique = list => [...new Set(list)];
 	const byLanguage = language => ({ Language }) => Language === language;
-	const byCategory = category => ({ Category }) => Category === category;
 	const removeSymbols = item => item.replace(/!|\?|¿|¡|,/g, '');
 	const polish = item => removeSymbols(removeAccents(item));
 	const toLowerCase = str => str.toLowerCase();
@@ -18,16 +17,18 @@ module.exports = async (airtable, namespace) => {
 
 		const processVocabulary = language => entryList =>
 			entryList
-				.filter(byCategory('Vocabulary'))
 				.filter(byLanguage(language))
 				.filter(isFilled)
-				.map(({ Input, Output }) => ({
+				.map(({ Input, Output, Category }) => ({
 					inputList: cleanList(unique(Input.split('\n'))),
-					outputList: cleanList(unique(Output.split('\n'))),
+					outputData: {
+						data: cleanList(unique(Output.split('\n'))),
+						category: Category,
+					},
 				}))
-				.map(({ inputList, outputList }) => inputList.reduce((total, input) => ({
+				.map(({ inputList, outputData }) => inputList.reduce((total, input) => ({
 					...total,
-					[input]: outputList,
+					[input]: outputData,
 				}), {}))
 				.reduce(merge, {});
 
@@ -57,12 +58,7 @@ module.exports = async (airtable, namespace) => {
 		});
 	};
 
-	const random = list => {
-		if (!list) return null;
-		return list[Math.floor(Math.random() * list.length)];
-	};
-
-	const lookupDictionary = language => input => random(dictionary[language] && dictionary[language][polish(input)]);
+	const lookupDictionary = language => input => dictionary[language] && dictionary[language][polish(input)];
 
 	await loadDictionary();
 	return {

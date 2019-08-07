@@ -19,8 +19,8 @@ module.exports = () => {
 		};
 
 		const findMatch = async input => {
-			debug(`Looking up for input ${input} for user ${user.id}...`);
 			const language = 'ES';
+			debug(`Looking up for input ${input} for user ${user.id} and language ${language}...`);
 			const result = cms.dictionary.lookup(language)(input);
 			if (result) return result;
 			try {

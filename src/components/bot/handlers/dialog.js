@@ -16,6 +16,9 @@ module.exports = (controller, bot) => async msg => {
 			bot.sendLocation(msg.chat.id, latitude, longitude);
 			bot.sendMessage(msg.chat.id, random(captions));
 		},
+		Pictures: ({ captions, pictures }) => {
+			bot.sendPhoto(msg.chat.id, random(pictures), { caption: random(captions) });
+		},
 	};
 
 	const input = msg.text.toString().toLowerCase();

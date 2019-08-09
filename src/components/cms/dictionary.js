@@ -16,11 +16,15 @@ module.exports = async (airtable, namespace) => {
 		const isFilled = item => item.Input && item.Output && item.Language;
 
 		const extractionByCategory = {
-			Vocabulary: item => cleanList(unique(item.Output.split('\n'))),
+			Vocabulary: item => item.Output.split('\n'),
 			Coordinates: item => ({
-				captions: cleanList(unique(item.Output.split('\n'))),
+				captions: item.Output.split('\n'),
 				longitude: item.Longitude,
 				latitude: item.Latitude,
+			}),
+			Pictures: item => ({
+				captions: item.Output.split('\n'),
+				pictures: item.Picture.split('\n'),
 			}),
 		};
 

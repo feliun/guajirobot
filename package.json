@@ -7,6 +7,7 @@
     "airtable": "^0.6.0",
     "debug": "^4.1.1",
     "dotenv": "^8.0.0",
+    "mocha": "^6.2.0",
     "mongodb": "^3.2.7",
     "node-telegram-bot-api": "^0.30.0",
     "remove-accents": "^0.4.2",
@@ -18,7 +19,7 @@
     "live": "SERVICE_ENV=live node index.js",
     "start": "node index.js",
     "manifest": "node_modules/make-manifest/bin/make-manifest",
-    "test": "echo \"No tests implemented yet, shame on me\" && exit 0",
+    "test": "mocha test",
     "lint": "eslint .",
     "qa": "npm run lint && npm run test",
     "docker": "docker-compose --file docker-compose.yml up -d --force-recreate --build"

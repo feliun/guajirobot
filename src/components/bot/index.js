@@ -16,8 +16,6 @@ module.exports = ({ token }) => {
 		console.log('Configuring bot....');
 		bot.onText(/\/start/, handlers.start);
 		bot.onText(/\/language/, handlers.language);
-		bot.onText(/\/sendpic/, handlers.pictures);
-		bot.onText(/\/venue/, handlers.venue);
 		bot.onText(/\/trivia/, handlers.trivia);
 		bot.on('message', handlers.dialog);
 		console.log('Bot up and running!');

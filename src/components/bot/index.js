@@ -4,8 +4,8 @@ const handlerConstructors = require('require-all')({
 	dirname: join(__dirname, 'handlers'),
 });
 
-module.exports = ({ token }) => {
-	const bot = new TelegramBot(token, { polling: true, onlyFirstMatch: true });
+module.exports = ({ token, url }) => {
+	const bot = new TelegramBot(token, { onlyFirstMatch: true });
 
 	const start = async ({ controller }) => {
 		const handlers = Object.keys(handlerConstructors).reduce((total, handlerName) => ({
@@ -14,11 +14,14 @@ module.exports = ({ token }) => {
 		}), {});
 
 		console.log('Configuring bot....');
+		bot.setWebHook(`${url}/bot${token}`);
 		bot.onText(/\/start/, handlers.start);
 		bot.onText(/\/language/, handlers.language);
 		bot.onText(/\/trivia/, handlers.trivia);
 		bot.on('message', handlers.dialog);
 		console.log('Bot up and running!');
+
+		return { processUpdate: bot.processUpdate.bind(bot) };
 	};
 
 	return { start };

@@ -4,6 +4,7 @@ const initBot = require('./src/components/bot/index.js');
 const initCms = require('./src/components/cms');
 const initDb = require('./src/components/db');
 const initController = require('./src/components/controller');
+const initServer = require('./src/components/server');
 
 const DICTIONARY_FREQUENCY = 5 * 60 * 1000; // 5 minutes
 
@@ -12,7 +13,8 @@ const start = async () => {
 	const cms = await initCms(config.airtable).start();
 	const db = await initDb(config.db).start();
 	const controller = await initController().start({ cms, db });
-	await initBot(config.bot).start({ controller });
+	const bot = await initBot(config.bot).start({ controller });
+	await initServer({ ...config.server, token: config.bot.token }).start({ bot });
 	setInterval(async () => {
 		console.log('Time to reload dictionary...');
 		await cms.dictionary.load();

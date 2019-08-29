@@ -1,6 +1,10 @@
 module.exports = {
 	bot: {
 		token: process.env.BOT_TOKEN || 'bottokengoeshere',
+		url: 'https://5f808d07.ngrok.io',
+	},
+	server: {
+		port: process.env.PORT || 3000,
 	},
 	db: {
 		url: process.env.MONGO_URL || 'mongodb://user:pass@localhost:27017/guajirobot',

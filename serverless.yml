@@ -1,11 +1,8 @@
 service: guajirobot
 
-custom:
-  secrets: ${file(secrets.json)}
-
 provider:
   name: aws
-  runtime: nodejs10
+  runtime: nodejs10.x
   stage: ${opt:stage, 'dev'}
   region: ${opt:region, 'eu-west-1'}
   environment:
@@ -16,6 +13,6 @@ functions:
     handler: ./index.process
     events:
       - http:
-          path: /bot${self:custom.secrets.BOT_TOKEN}
+          path: /guajirobot
           method: post
           cors: true

@@ -1,7 +1,6 @@
 module.exports = {
 	bot: {
 		token: process.env.BOT_TOKEN || 'bottokengoeshere',
-		url: process.env.SERVER_URL || 'https://localhost:3000',
 	},
 	server: {
 		port: process.env.PORT || 3000,

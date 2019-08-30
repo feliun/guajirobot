@@ -74,11 +74,7 @@ module.exports = async (airtable, namespace) => {
 		});
 	};
 
-	const lookupDictionary = language => input => dictionary[language] && dictionary[language][polish(input)];
-
+	const lookup = language => input => dictionary[language] && dictionary[language][polish(input)];
 	await loadDictionary();
-	return {
-		load: loadDictionary,
-		lookup: lookupDictionary,
-	};
+	return { lookup };
 };

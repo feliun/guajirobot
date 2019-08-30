@@ -1,7 +1,7 @@
 module.exports = {
 	bot: {
 		token: process.env.BOT_TOKEN || 'bottokengoeshere',
-		url: 'https://5f808d07.ngrok.io',
+		url: process.env.SERVER_URL || 'https://localhost:3000',
 	},
 	server: {
 		port: process.env.PORT || 3000,

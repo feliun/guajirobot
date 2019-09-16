@@ -11,14 +11,15 @@
     "mongodb": "^3.2.7",
     "node-telegram-bot-api": "^0.30.0",
     "remove-accents": "^0.4.2",
-    "require-all": "^3.0.0"
+    "require-all": "^3.0.0",
+    "serverless-dotenv-plugin": "^2.1.1"
   },
   "scripts": {
     "local": "SERVICE_ENV=local node simulate.js",
     "dev": "SERVICE_ENV=dev node simulate.js",
     "live": "SERVICE_ENV=live node simulate.js",
-    "deploy-dev": "sls deploy --region eu-west-1 --stage dev",
-    "deploy-live": "sls deploy --region eu-west-1 --stage live",
+    "deploy-dev": "NODE_ENV=dev sls deploy --region eu-west-1 --stage dev",
+    "deploy-live": "NODE_ENV=live sls deploy --region eu-west-1 --stage live",
     "manifest": "node_modules/make-manifest/bin/make-manifest",
     "test": "mocha test",
     "lint": "eslint .",

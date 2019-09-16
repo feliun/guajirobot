@@ -7,7 +7,11 @@ provider:
   region: ${opt:region, 'eu-west-1'}
   environment:
     SERVICE_ENV: ${opt:stage, 'dev'}
-
+    MONGO_URL: ${env:MONGO_URL}
+    MONGO_DB: ${env:MONGO_DB}
+    BOT_TOKEN: ${env:BOT_TOKEN}
+    AIRTABLE_KEY: ${env:AIRTABLE_KEY}
+    AIRTABLE_BASE: ${env:AIRTABLE_BASE}
 functions:
   process:
     handler: ./index.process
@@ -16,3 +20,5 @@ functions:
           path: /guajirobot
           method: post
           cors: true
+plugins:
+  - serverless-dotenv-plugin

@@ -5,7 +5,7 @@ module.exports.process = async event => {
 	const bot = await start();
 	const input = JSON.parse(event.body);
 	try {
-		bot.processUpdate(input);
+		await bot.processUpdate(input);
 		response = {
 			statusCode: 200,
 			body: JSON.stringify({

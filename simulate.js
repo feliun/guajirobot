@@ -5,10 +5,7 @@ const initServer = require('./src/components/server');
 
 const init = async () => {
 	const bot = await system.start();
-	const { start } = initServer({
-		token: config.bot.token,
-		port: config.server.port,
-	});
+	const { start } = initServer({ port: config.server.port });
 	await start({ bot });
 };
 

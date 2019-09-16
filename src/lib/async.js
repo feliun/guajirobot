@@ -4,14 +4,14 @@ module.exports = () => {
 	const promises = {};
 
 	const trigger = async id => {
-		console.log(`Triggering promise for message id ${id}...`);
+		debug(`Triggering promise for message id ${id}...`);
 		promises[id]();
-    delete promises[id];
-    return Promise.resolve();
+		delete promises[id];
+		return Promise.resolve();
 	};
 
 	const createHangingPromise = id => new Promise(resolve => {
-		console.log(`Creating promise for message id ${id}...`);
+		debug(`Creating promise for message id ${id}...`);
 		promises[id] = resolve;
 	});
 
@@ -21,8 +21,8 @@ module.exports = () => {
 			await fn(msg);
 		} catch (e) {
 			console.error(`Error on handler: ${e.message}`);
-    }
-    return trigger(msgId);
+		}
+		return trigger(msgId);
 	};
 
 	return {

@@ -1,5 +1,5 @@
-const express = require('express');
-const bodyParser = require('body-parser');
+const express = require('express'); // eslint-disable-line import/no-extraneous-dependencies
+const bodyParser = require('body-parser'); // eslint-disable-line import/no-extraneous-dependencies
 
 module.exports = ({ port }) => {
 	const start = async ({ bot }) => {

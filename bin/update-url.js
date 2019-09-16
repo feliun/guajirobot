@@ -7,4 +7,4 @@ const botToken = config.bot.token;
 const url = process.env.DEPLOYMENT_URL;
 
 const bot = new TelegramBot(botToken, { onlyFirstMatch: true });
-bot.setWebHook(`${url}/bot${botToken}`);
+bot.setWebHook(url);

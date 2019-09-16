@@ -3,14 +3,15 @@ const debug = require('debug')('guajirobot:async');
 module.exports = () => {
 	const promises = {};
 
-	const trigger = id => {
-		debug(`Triggering promise for message id ${id}...`);
+	const trigger = async id => {
+		console.log(`Triggering promise for message id ${id}...`);
 		promises[id]();
-		delete promises[id];
+    delete promises[id];
+    return Promise.resolve();
 	};
 
 	const createHangingPromise = id => new Promise(resolve => {
-		debug(`Creating promise for message id ${id}...`);
+		console.log(`Creating promise for message id ${id}...`);
 		promises[id] = resolve;
 	});
 
@@ -20,9 +21,8 @@ module.exports = () => {
 			await fn(msg);
 		} catch (e) {
 			console.error(`Error on handler: ${e.message}`);
-		} finally {
-			trigger(msgId);
-		}
+    }
+    return trigger(msgId);
 	};
 
 	return {

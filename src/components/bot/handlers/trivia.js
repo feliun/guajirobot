@@ -24,7 +24,7 @@ module.exports = (controller, bot) => async msg => {
 		},
 	];
 
-	bot.sendMessage(msg.chat.id, questions[0].question, {
+	await bot.sendMessage(msg.chat.id, questions[0].question, {
 		reply_markup: {
 			inline_keyboard: [
 				[{

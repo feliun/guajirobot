@@ -8,30 +8,33 @@ module.exports = (controller, bot) => async msg => {
 	};
 
 	const replyByCategory = {
-		Vocabulary: options => {
+		Vocabulary: async options => {
 			const choice = random(options);
-			bot.sendMessage(msg.chat.id, choice);
+			console.log('Sending message....');
+			await bot.sendMessage(msg.chat.id, choice);
 		},
-		Coordinates: ({ captions, longitude, latitude }) => {
-			bot.sendLocation(msg.chat.id, latitude, longitude);
-			bot.sendMessage(msg.chat.id, random(captions));
+		Coordinates: async ({ captions, longitude, latitude }) => {
+			await bot.sendLocation(msg.chat.id, latitude, longitude);
+			await bot.sendMessage(msg.chat.id, random(captions));
 		},
-		Pictures: ({ captions, pictures }) => {
-			bot.sendPhoto(msg.chat.id, random(pictures), { caption: random(captions) });
+		Pictures: async ({ captions, pictures }) => {
+			await bot.sendPhoto(msg.chat.id, random(pictures), { caption: random(captions) });
 		},
 	};
 
 	const input = msg.text.toString().toLowerCase();
 	const user = msg.from;
 	const userId = user.id;
-	debug(`Message received for user ${userId}...`);
+	console.log(`Message received for user ${userId}...`);
 	try {
 		const match = await controller(user).findMatch(input);
-		if (!match) return;
+		if (!match) return Promise.resolve();
+		debug(`Match for ${match}...`);
 		const { data, category } = match;
 		const handler = replyByCategory[category] || noop;
-		handler(data);
+		await handler(data);
 	} catch (err) {
 		console.error(`Error on message handler: ${err.message}`);
 	}
+	return Promise.resolve();
 };

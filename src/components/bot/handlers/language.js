@@ -6,7 +6,7 @@ module.exports = (controller, bot) => async msg => {
 		// await languageCache.updateUser({ ...user, language });
 	});
 
-	bot.sendMessage(msg.chat.id, 'Elige tu idioma / Please choose your language', {
+	await bot.sendMessage(msg.chat.id, 'Elige tu idioma / Please choose your language', {
 		reply_markup: {
 			inline_keyboard: [
 				[{

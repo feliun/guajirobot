@@ -32,8 +32,33 @@ module.exports = () => {
 			return null;
 		};
 
+		const getTriviaQuestion = () => {
+			const questions = [
+				{
+					id: 1,
+					text: 'When did we kiss for the first time?',
+					answers: [
+						{
+							text: 'London',
+							hit: false,
+						},
+						{
+							text: 'Madrid',
+							hit: false,
+						},
+						{
+							text: 'In the middle of a flight',
+							hit: true,
+						},
+					],
+				},
+			];
+			return Promise.resolve(questions[0]);
+		};
+
 		return {
 			findMatch: audit(findMatch),
+			getTriviaQuestion,
 		};
 	};
 

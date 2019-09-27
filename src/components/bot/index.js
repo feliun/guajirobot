@@ -1,27 +1,16 @@
 const TelegramBot = require('node-telegram-bot-api');
-const { join } = require('path');
 const initAsync = require('../../lib/async');
-const handlerConstructors = require('require-all')({
-	dirname: join(__dirname, 'handlers'),
-});
+const initRouter = require('./router');
 
 module.exports = ({ token }) => {
 	const bot = new TelegramBot(token, { onlyFirstMatch: true });
 	const asyncController = initAsync();
+	const promisify = asyncController.promisify;
 
 	const start = async ({ controller }) => {
-		const handlers = Object.keys(handlerConstructors).reduce((total, handlerName) => ({
-			...total,
-			[handlerName]: handlerConstructors[handlerName](controller, bot),
-		}), {});
-
-		const promisify = asyncController.promisify;
-
 		console.log('Configuring bot....');
-		bot.onText(/\/start/, promisify(handlers.start));
-		bot.onText(/\/language/, promisify(handlers.language));
-		bot.onText(/\/trivia/, promisify(handlers.trivia));
-		bot.on('message', promisify(handlers.dialog));
+		const { route } = initRouter(bot, controller);
+		bot.on('message', promisify(route));
 		console.log('Bot up and running!');
 
 		const processUpdate = async input => {

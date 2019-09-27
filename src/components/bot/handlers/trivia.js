@@ -40,4 +40,5 @@ module.exports = (controller, bot) => async msg => {
 				]],
 		},
 	});
+	return Promise.resolve();
 };

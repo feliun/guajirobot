@@ -1,0 +1,26 @@
+const { join } = require('path');
+const handlerConstructors = require('require-all')({
+	dirname: join(__dirname, 'handlers'),
+});
+
+module.exports = (bot, controller) => {
+	const handlers = Object.keys(handlerConstructors).reduce((total, handlerName) => ({
+		...total,
+		[handlerName]: handlerConstructors[handlerName](controller, bot),
+	}), {});
+
+	const route = async msg => {
+		const { text } = msg;
+		const handlerByText = {
+			'/start': handlers.start,
+			'/language': handlers.language,
+			'/trivia': handlers.trivia,
+			default: handlers.dialog,
+		};
+		const handler = handlerByText[text] || handlerByText.default;
+		await handler(msg);
+		return Promise.resolve();
+	};
+
+	return { route };
+};

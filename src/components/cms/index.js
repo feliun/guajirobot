@@ -1,6 +1,7 @@
 const debug = require('debug')('guajirobot:cms');
 const Airtable = require('airtable');
 const initDictionary = require('./dictionary');
+const initTrivia = require('./trivia');
 
 module.exports = ({ url, apiKey, base, namespaces }) => {
 	let airtable;
@@ -11,8 +12,9 @@ module.exports = ({ url, apiKey, base, namespaces }) => {
 			apiKey,
 		});
 		airtable = Airtable.base(base);
-		const api = await initDictionary(airtable, namespaces.dictionary);
-		return api;
+		const dictionary = await initDictionary(airtable, namespaces.dictionary);
+		const trivia = await initTrivia(airtable, namespaces.trivia);
+		return { dictionary, trivia };
 	};
 
 	return {

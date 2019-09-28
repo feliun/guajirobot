@@ -16,6 +16,7 @@ module.exports = {
 		url: 'https://api.airtable.com',
 		namespaces: {
 			dictionary: 'Dictionary',
+			trivia: 'Trivia',
 		},
 	},
 };

@@ -1,6 +1,4 @@
 SERVICE=guajirobot
-DOCKER_HOST=quay.io
-DOCKER_ACCOUNT=feliun
 
 install:
 	@echo "No installation needed as the service is built inside Docker..."
@@ -13,18 +11,7 @@ brand:
 	@cat ./manifest.json
 
 qa:
-	@docker run --name $(SERVICE) --env SERVICE_ENV=local --rm --entrypoint npm $(SERVICE):$(TRAVIS_BUILD_NUMBER) run qa --
+	@npm run qa
 
 start:
 	@docker run -d --name $(SERVICE) $(SERVICE):$(TRAVIS_BUILD_NUMBER)
-
-package:
-	@docker build --tag $(SERVICE):$(TRAVIS_BUILD_NUMBER) .
-	@docker images
-
-archive: start
-	@docker login -u=$(DOCKER_USERNAME) -p=$(DOCKER_PASSWORD) $(DOCKER_HOST)
-	docker ps
-	@CONTAINER_ID=`docker ps -l | grep $(SERVICE) | awk '{print $$1}'` && \
-	docker commit $$CONTAINER_ID $(DOCKER_HOST)/$(DOCKER_ACCOUNT)/$(SERVICE)
-	docker push $(DOCKER_HOST)/$(DOCKER_ACCOUNT)/$(SERVICE)

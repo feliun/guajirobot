@@ -4,7 +4,6 @@ install:
 	@echo "No installation needed as the service is built inside Docker..."
 
 ensure-dependencies:
-	@nvm use 10
 	@npm install serverless -g
 	@npm run docker
 

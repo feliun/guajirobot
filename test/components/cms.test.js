@@ -8,8 +8,8 @@ describe('CMS tests', () => {
 
 	before(async () => {
 		const cms = await initCms(config.airtable).start();
-		englishLookup = cms.lookup('EN');
-		spanishLookup = cms.lookup('ES');
+		englishLookup = cms.dictionary.lookup('EN');
+		spanishLookup = cms.dictionary.lookup('ES');
 	});
 
 	describe('Vocabulary', () => {

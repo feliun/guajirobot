@@ -16,8 +16,3 @@ before_script:
 script:
 - make brand
 - make qa
-deploy:
-script: npm run deploy-dev
-skip_cleanup: true
-on:
-  branch: master

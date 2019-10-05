@@ -35,7 +35,17 @@ module.exports = config => {
 			await db.collection('unmatched').insertOne(payload);
 		};
 
-		return { updateProfile, audit, storeUnmatched };
+		const recordTriviaAnswer = async payload => {
+			debug('Storing trivia outcome...');
+			await db.collection('trivia').insertOne(payload);
+		};
+
+		return {
+			updateProfile,
+			audit,
+			storeUnmatched,
+			recordTriviaAnswer,
+		};
 	};
 
 	return {

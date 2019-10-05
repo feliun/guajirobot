@@ -1,31 +1,31 @@
-// const debug = require('debug')('guajirobot:bot:callbacks:router');
+const debug = require('debug')('guajirobot:bot:callbacks:router');
 
-// const { join } = require('path');
-// const handlerConstructors = require('require-all')({
-// 	dirname: join(__dirname, 'handlers'),
-// });
+const { join } = require('path');
+const handlerConstructors = require('require-all')({
+	dirname: join(__dirname, 'handlers'),
+});
 
-// module.exports = (bot, controller) => {
-// 	// const handlers = Object.keys(handlerConstructors).reduce((total, handlerName) => ({
-// 	// 	...total,
-// 	// 	[handlerName]: handlerConstructors[handlerName](controller, bot),
-// 	// }), {});
+module.exports = (bot, controller) => {
+	const handlers = Object.keys(handlerConstructors).reduce((total, handlerName) => ({
+		...total,
+		[handlerName]: handlerConstructors[handlerName](controller, bot),
+	}), {});
 
-// 	const route = async msg => {
-// 		console.log('CALLBACK!');
-// 		console.log(JSON.stringify(msg, null, 2));
-// 		// const { text } = msg;
-// 		// const handlerByText = {
-// 		// 	'/start': handlers.start,
-// 		// 	'/language': handlers.language,
-// 		// 	'/trivia': handlers.trivia,
-// 		// 	default: handlers.dialog,
-// 		// };
-// 		// debug(`Finding router handler for text ${text}...`);
-// 		// const handler = handlerByText[text] || handlerByText.default;
-// 		// await handler(msg);
-// 		return Promise.resolve();
-// 	};
+	const parse = data =>
+		data.split(',')
+			.map(tuple => tuple.split('='))
+			.reduce((total, [key, value]) => ({ ...total, [key]: value }), {});
 
-// 	return { route };
-// };
+	const route = async msg => {
+		const data = parse(msg.callback_query.data);
+		const handlerByCommand = {
+			trivia: handlers.trivia,
+		};
+		debug(`Finding router callback handler for command ${data.command}...`);
+		const handler = handlerByCommand[data.command];
+		await handler({ ...msg.callback_query, data });
+		return Promise.resolve();
+	};
+
+	return { route };
+};

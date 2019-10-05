@@ -1,17 +1,13 @@
 const debug = require('debug')('guajirobot:bot:commands:handler:trivia');
 
 module.exports = (controller, bot) => async msg => {
-	const format = answers => answers.map((answer, index) => {
-		const response = {
-			command: 'trivia',
-			data: {
-				question: 1, // TODO use an immutable Q ID
-				answer: index,
-			},
-		};
+	const format = winner => answers => answers.map((answer, index) => {
+		const question = 1; // TODO use an immutable real Q ID
+		// https://github.com/nickoala/telepot/issues/293#issuecomment-326426090
+		const response = `command=trivia,q=${question},a=${index + 1},win=${winner === (index + 1)}`;
 		return {
 			text: answer.text,
-			callback_data: JSON.stringify(response),
+			callback_data: response,
 		};
 	});
 
@@ -20,7 +16,7 @@ module.exports = (controller, bot) => async msg => {
 	const question = await controller(user).getTriviaQuestion(msg.from.id);
 	await bot.sendMessage(msg.chat.id, question.text, {
 		reply_markup: {
-			inline_keyboard: [format(question.answers)],
+			inline_keyboard: [format(question.winner)(question.answers)],
 		},
 	});
 	return Promise.resolve();

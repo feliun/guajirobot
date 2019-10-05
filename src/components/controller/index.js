@@ -39,9 +39,15 @@ module.exports = () => {
 			return Promise.resolve(questions[0]);
 		};
 
+		const registerTriviaAnswer = async (question, answer, hit) => {
+			await db.recordTriviaAnswer({ userId: user.id, question, answer, hit, timestamp: new Date() });
+			return Promise.resolve();
+		};
+
 		return {
 			findMatch: audit(findMatch),
-			getTriviaQuestion,
+			getTriviaQuestion: audit(getTriviaQuestion),
+			registerTriviaAnswer,
 		};
 	};
 

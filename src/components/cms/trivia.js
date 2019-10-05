@@ -19,6 +19,7 @@ module.exports = async (airtable, namespace) => {
 						{ text: item.Option2 },
 						{ text: item.Option3 },
 					],
+					winner: item.Winner,
 				}));
 
 		console.log('Starting trivia reload...');

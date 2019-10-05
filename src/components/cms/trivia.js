@@ -46,7 +46,7 @@ module.exports = async (airtable, namespace) => {
 			});
 		});
 	};
-	const getNext = language => options[language];
+	const getQuestions = language => options[language];
 	await loadTrivia();
-	return { getNext };
+	return { getQuestions };
 };

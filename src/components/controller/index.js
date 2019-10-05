@@ -33,7 +33,9 @@ module.exports = () => {
 		};
 
 		const getTriviaQuestion = () => {
-			const questions = cms.trivia.getNext('ES');
+			const questions = cms.trivia.getQuestions('ES');
+			// get from DB data answered questions by that user
+			// return a question that is not answered yet
 			return Promise.resolve(questions[0]);
 		};
 

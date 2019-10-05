@@ -12,8 +12,10 @@ module.exports = ({ url, apiKey, base, namespaces }) => {
 			apiKey,
 		});
 		airtable = Airtable.base(base);
-		const dictionary = await initDictionary(airtable, namespaces.dictionary);
-		const trivia = await initTrivia(airtable, namespaces.trivia);
+		const [dictionary, trivia] = await Promise.all([
+			initDictionary(airtable, namespaces.dictionary),
+			initTrivia(airtable, namespaces.trivia),
+		]);
 		return { dictionary, trivia };
 	};
 

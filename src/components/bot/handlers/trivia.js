@@ -4,6 +4,7 @@ module.exports = (controller, bot) => async msg => {
 	// bot.on('callback_query', msg => {
 	//   console.log(JSON.stringify(msg));
 	// });
+	// TODO: register via controller answered question
 
 	const format = answers => answers.map((answer, index) => ({
 		text: answer.text,

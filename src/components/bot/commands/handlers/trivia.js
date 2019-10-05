@@ -1,15 +1,19 @@
-const debug = require('debug')('guajirobot:bot:handler:trivia');
+const debug = require('debug')('guajirobot:bot:commands:handler:trivia');
 
 module.exports = (controller, bot) => async msg => {
-	// bot.on('callback_query', msg => {
-	//   console.log(JSON.stringify(msg));
-	// });
-	// TODO: register via controller answered question
-
-	const format = answers => answers.map((answer, index) => ({
-		text: answer.text,
-		callback_data: `question:1,answer:${index}`,
-	}));
+	const format = answers => answers.map((answer, index) => {
+		const response = {
+			command: 'trivia',
+			data: {
+				question: 1, // TODO use an immutable Q ID
+				answer: index,
+			},
+		};
+		return {
+			text: answer.text,
+			callback_data: JSON.stringify(response),
+		};
+	});
 
 	const user = msg.from;
 	debug(`Finding a trivia question for user ${user.id}...`);

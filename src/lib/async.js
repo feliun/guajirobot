@@ -15,8 +15,13 @@ module.exports = () => {
 		promises[id] = resolve;
 	});
 
+	const extractMsgId = msg => {
+		const envelope = msg.message || msg.callback_query.message;
+		return envelope.message_id;
+	};
+
 	const promisify = fn => async msg => {
-		const msgId = msg.message_id;
+		const msgId = extractMsgId(msg);
 		try {
 			await fn(msg);
 		} catch (e) {

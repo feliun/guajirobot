@@ -9,6 +9,7 @@ module.exports = config => {
 		db.collection('users').createIndex({ id: 1 }, { unique: true });
 		db.collection('audit').createIndex({ fn: 1, timestamp: 1, userId: 1 });
 		db.collection('unmatched').createIndex({ language: 1, userId: 1 });
+		db.collection('trivia').createIndex({ userId: 1 });
 
 		const updateProfile = async profile => {
 			debug('Updating profile...');

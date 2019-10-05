@@ -1,4 +1,4 @@
-const debug = require('debug')('guajirobot:bot:router');
+const debug = require('debug')('guajirobot:bot:commands:router');
 
 const { join } = require('path');
 const handlerConstructors = require('require-all')({
@@ -11,8 +11,8 @@ module.exports = (bot, controller) => {
 		[handlerName]: handlerConstructors[handlerName](controller, bot),
 	}), {});
 
-	const route = async msg => {
-		const { text } = msg;
+	const route = async ({ message }) => {
+		const { text } = message;
 		const handlerByText = {
 			'/start': handlers.start,
 			'/language': handlers.language,
@@ -21,7 +21,7 @@ module.exports = (bot, controller) => {
 		};
 		debug(`Finding router handler for text ${text}...`);
 		const handler = handlerByText[text] || handlerByText.default;
-		await handler(msg);
+		await handler(message);
 		return Promise.resolve();
 	};
 

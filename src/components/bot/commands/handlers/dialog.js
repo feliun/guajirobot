@@ -1,4 +1,4 @@
-const debug = require('debug')('guajirobot:bot:handler:dialog');
+const debug = require('debug')('guajirobot:bot:commands:handler:dialog');
 
 module.exports = (controller, bot) => async msg => {
 	const noop = () => {};

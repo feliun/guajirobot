@@ -4,23 +4,18 @@ module.exports = (controller, bot) => async msg => {
 	// bot.on('callback_query', msg => {
 	//   console.log(JSON.stringify(msg));
 	// });
+
+	const format = answers => answers.map((answer, index) => ({
+		text: answer.text,
+		callback_data: `question:1,answer:${index}`,
+	}));
+
 	const user = msg.from;
 	debug(`Finding a trivia question for user ${user.id}...`);
 	const question = await controller(user).getTriviaQuestion(msg.from.id);
 	await bot.sendMessage(msg.chat.id, question.text, {
 		reply_markup: {
-			inline_keyboard: [
-				[{
-					text: question.answers[0].text,
-					callback_data: 'question:1,answer:0',
-				}, {
-					text: question.answers[1].text,
-					callback_data: 'question:1,answer:1',
-				}, {
-					text: question.answers[2].text,
-					callback_data: 'question:1,answer:2',
-				},
-				]],
+			inline_keyboard: [format(question.answers)],
 		},
 	});
 	return Promise.resolve();

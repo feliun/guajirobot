@@ -15,6 +15,7 @@ module.exports = (bot, controller) => {
 		const { text } = message;
 		const handlerByText = {
 			'/start': handlers.start,
+			'/iniciar': handlers.start,
 			'/language': handlers.language,
 			'/trivia': handlers.trivia,
 			default: handlers.dialog,

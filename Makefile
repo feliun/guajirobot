@@ -13,6 +13,3 @@ brand:
 
 qa:
 	@npm run qa
-
-start:
-	@docker run -d --name $(SERVICE) $(SERVICE):$(TRAVIS_BUILD_NUMBER)

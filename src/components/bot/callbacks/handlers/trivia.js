@@ -4,7 +4,7 @@ module.exports = (controller, bot) => async msg => {
 	const user = msg.from;
 	const questionId = parseInt(msg.data.q, 10);
 	const answer = parseInt(msg.data.a, 10);
-	const won = Boolean(msg.data.win);
+	const won = msg.data.win === 'true';
 	const chatId = msg.message.chat.id;
 
 	await controller(user).registerTriviaAnswer(questionId, answer, won);

@@ -14,9 +14,10 @@ module.exports = (controller, bot) => async msg => {
 	const user = msg.from;
 	debug(`Finding a trivia question for user ${user.id}...`);
 	const question = await controller(user).getTriviaQuestion(msg.from.id);
+	const choices = [format(question.winner)(question.answers)];
 	await bot.sendMessage(msg.chat.id, question.text, {
 		reply_markup: {
-			inline_keyboard: [format(question.winner)(question.answers)],
+			inline_keyboard: choices,
 		},
 	});
 	return Promise.resolve();

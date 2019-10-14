@@ -37,7 +37,11 @@ module.exports = config => {
 
 		const recordTriviaAnswer = async payload => {
 			debug('Storing trivia outcome...');
-			await db.collection('trivia').insertOne(payload);
+			await db.collection('trivia').updateOne(
+				{ userId: payload.userId, question: payload.question },
+				{ $set: payload },
+				{ upsert: true },
+			);
 		};
 
 		return {

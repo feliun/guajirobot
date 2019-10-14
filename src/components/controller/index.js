@@ -32,11 +32,16 @@ module.exports = () => {
 			return null;
 		};
 
-		const getTriviaQuestion = () => {
-			const questions = cms.trivia.getQuestions('ES');
-			// get from DB data answered questions by that user
-			// return a question that is not answered yet
-			return Promise.resolve(questions[0]);
+		const difference = (list1, list2) => list1.filter(item => !list2.some(anotherItem => anotherItem.question === item.question));
+		const random = list => list[Math.floor(Math.random() * list.length)];
+
+		const getTriviaQuestion = async () => {
+			const [questions, answered] = await Promise.all([
+				cms.trivia.getQuestions('ES'),
+				db.getTriviaAnswers(user.id),
+			]);
+			const options = difference(questions, answered);
+			return Promise.resolve(random(options));
 		};
 
 		const registerTriviaAnswer = async (question, answer, hit) => {

@@ -14,6 +14,7 @@ module.exports = async (airtable, namespace) => {
 				.filter(isFilled)
 				.map(item => ({
 					text: item.Question,
+					question: parseInt(item.ID, 10),
 					answers: [
 						{ text: item.Option1 },
 						{ text: item.Option2 },

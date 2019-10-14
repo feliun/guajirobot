@@ -44,11 +44,18 @@ module.exports = config => {
 			);
 		};
 
+		const getTriviaAnswers = async userId => {
+			debug(`Getting trivia answers for user ${userId}...`);
+			const answers = await db.collection('trivia').find({ userId }).toArray();
+			return answers;
+		};
+
 		return {
 			updateProfile,
 			audit,
 			storeUnmatched,
 			recordTriviaAnswer,
+			getTriviaAnswers,
 		};
 	};
 

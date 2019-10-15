@@ -25,7 +25,7 @@ module.exports = (controller, bot) => async msg => {
 	const input = msg.text.toString().toLowerCase();
 	const user = msg.from;
 	const userId = user.id;
-	console.log(`Message received for user ${userId}...`);
+	debug(`Message received for user ${userId}...`);
 	try {
 		const match = await controller(user).findMatch(input);
 		if (!match) return Promise.resolve();

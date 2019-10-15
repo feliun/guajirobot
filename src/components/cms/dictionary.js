@@ -74,7 +74,20 @@ module.exports = async (airtable, namespace) => {
 		});
 	};
 
-	const lookup = language => input => dictionary[language] && dictionary[language][polish(input)];
+	const lookup = language => input => {
+		const toRegExp = item => new RegExp(`.*${item.replace(/ /g, '.*')}.*`);
+		const toKey = regexp => regexp.toString()
+			.replace(/\/|\*|\./g, ' ')
+			.split(' ')
+			.filter(item => item)
+			.join(' ');
+
+		const cleanedInput = polish(input);
+		const candidates = Object.keys(dictionary[language]).map(toRegExp);
+		const matchingRegExp = candidates.find(candidate => candidate.test(cleanedInput));
+		const key = matchingRegExp && toKey(matchingRegExp);
+		return dictionary[language][key];
+	};
 	await loadDictionary();
 	return { lookup };
 };

@@ -25,6 +25,15 @@ module.exports = config => {
 			return response;
 		};
 
+		const updateLanguage = async (userId, language) => {
+			debug(`Updating language ${language}... for user ${userId}`);
+			const input = {
+				preferredLanguage: language,
+			};
+			const response = await db.collection('users').findOneAndUpdate({ id: userId }, { $set: input }, { upsert: true, returnNewDocument: true });
+			return response;
+		};
+
 		const audit = async payload => {
 			debug('Recording a new audited item...');
 			await db.collection('audit').insertOne(payload);
@@ -52,6 +61,7 @@ module.exports = config => {
 
 		return {
 			updateProfile,
+			updateLanguage,
 			audit,
 			storeUnmatched,
 			recordTriviaAnswer,

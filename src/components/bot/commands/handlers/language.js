@@ -1,25 +1,19 @@
-const debug = require('debug')('guajirobot:bot:commands:handler:language');
-
 module.exports = (controller, bot) => async msg => {
-	bot.on('callback_query', async message => {
-		console.log(JSON.stringify(message));
-		// const language = 'EN';
-		// const user = {};
-		// await languageCache.updateUser({ ...user, language });
-	});
-	debug('Processing for language change...');
-	await bot.sendMessage(msg.chat.id, 'Elige tu idioma / Please choose your language', {
+	const caption = `
+	Welcome to the V&F wedding bot!
+	Bienvenido/a al bot de la boda de V&F!
+	Choose your language please / Elige tu idioma, por favor:`;
+	await bot.sendMessage(msg.chat.id, caption, {
 		reply_markup: {
 			inline_keyboard: [
 				[{
-					text: 'Español',
-					callback_data: 'language:ES',
+					text: 'English',
+					callback_data: 'command=language,language=en',
 				}],
 				[{
-					text: 'English',
-					callback_data: 'language:EN',
+					text: 'Español',
+					callback_data: 'command=language,language=es',
 				}],
-			],
-		},
+			] },
 	});
 };

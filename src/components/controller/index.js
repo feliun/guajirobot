@@ -32,6 +32,12 @@ module.exports = () => {
 			return null;
 		};
 
+		const updateLanguage = async language => {
+			debug(`Updating language ${language} for user ${user.id}...`);
+			await db.updateLanguage(user.id, language);
+			return Promise.resolve();
+		};
+
 		const difference = (list1, list2) => list1.filter(item => !list2.some(anotherItem => anotherItem.question === item.question));
 		const random = list => list[Math.floor(Math.random() * list.length)];
 
@@ -51,6 +57,7 @@ module.exports = () => {
 
 		return {
 			findMatch: audit(findMatch),
+			updateLanguage: audit(updateLanguage),
 			getTriviaQuestion: audit(getTriviaQuestion),
 			registerTriviaAnswer,
 		};

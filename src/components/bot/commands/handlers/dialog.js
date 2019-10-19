@@ -10,7 +10,6 @@ module.exports = (controller, bot) => async msg => {
 	const replyByCategory = {
 		Vocabulary: async options => {
 			const choice = random(options);
-			console.log('Sending message....');
 			await bot.sendMessage(msg.chat.id, choice);
 		},
 		Coordinates: async ({ captions, longitude, latitude }) => {

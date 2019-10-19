@@ -14,8 +14,8 @@ module.exports = (bot, controller) => {
 	const route = async ({ message }) => {
 		const { text } = message;
 		const handlerByText = {
-			'/start': handlers.start,
-			'/iniciar': handlers.start,
+			'/start': handlers.language,
+			'/iniciar': handlers.language,
 			'/language': handlers.language,
 			'/trivia': handlers.trivia,
 			default: handlers.dialog,

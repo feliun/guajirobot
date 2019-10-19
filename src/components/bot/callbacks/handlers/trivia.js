@@ -1,7 +1,6 @@
 const debug = require('debug')('guajirobot:bot:callbacks:handler:trivia');
 
 module.exports = (controller, bot) => async msg => {
-
 	const composeName = user => {
 		if (!user.last_name) return `${user.first_name}`;
 		return `${user.first_name} ${user.last_name}`;

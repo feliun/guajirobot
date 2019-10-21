@@ -19,7 +19,7 @@ module.exports = () => {
 		};
 
 		const findPreferredLanguage = async () => {
-			const { preferredLanguage } = await db.getUser(user.id);
+			const { preferredLanguage = 'es' } = await db.getUser(user.id);
 			const language = await preferredLanguage.toUpperCase();
 			return language;
 		};

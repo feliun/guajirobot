@@ -34,6 +34,12 @@ module.exports = config => {
 			return response;
 		};
 
+		const getUser = async userId => {
+			debug(`Getting profile data for user ${userId}`);
+			const response = await db.collection('users').findOne({ id: userId });
+			return response;
+		};
+
 		const audit = async payload => {
 			debug('Recording a new audited item...');
 			await db.collection('audit').insertOne(payload);
@@ -62,6 +68,7 @@ module.exports = config => {
 		return {
 			updateProfile,
 			updateLanguage,
+			getUser,
 			audit,
 			storeUnmatched,
 			recordTriviaAnswer,

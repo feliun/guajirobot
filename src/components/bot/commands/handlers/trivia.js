@@ -14,7 +14,7 @@ module.exports = (controller, bot) => async msg => {
 	debug(`Finding a trivia question for user ${user.id}...`);
 	const question = await controller(user).getTriviaQuestion(msg.from.id);
 	if (!question) {
-		await bot.sendMessage(msg.chat.id, 'You completed all the trivia questions!');
+		await bot.sendMessage(msg.chat.id, 'Game Over! 🎮');
 		return;
 	}
 	const choices = format(question.question, question.winner)(question.answers);

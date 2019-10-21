@@ -18,8 +18,14 @@ module.exports = () => {
 			return result;
 		};
 
+		const findPreferredLanguage = async () => {
+			const { preferredLanguage } = await db.getUser(user.id);
+			const language = await preferredLanguage.toUpperCase();
+			return language;
+		};
+
 		const findMatch = async input => {
-			const language = 'ES';
+			const language = await findPreferredLanguage();
 			debug(`Looking up for input ${input} for user ${user.id} and language ${language}...`);
 			const result = cms.dictionary.lookup(language)(input);
 			if (result) return result;
@@ -42,8 +48,9 @@ module.exports = () => {
 		const random = list => list[Math.floor(Math.random() * list.length)];
 
 		const getTriviaQuestion = async () => {
+			const language = await findPreferredLanguage();
 			const [questions, answered] = await Promise.all([
-				cms.trivia.getQuestions('ES'),
+				cms.trivia.getQuestions(language),
 				db.getTriviaAnswers(user.id),
 			]);
 			const options = difference(questions, answered);

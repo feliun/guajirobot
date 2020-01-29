@@ -9,16 +9,17 @@ module.exports = (controller, bot) => async msg => {
 			callback_data: response,
 		}];
 	});
-
+	const getChatId = msg => (msg.chat || msg.message.chat).id;
 	const user = msg.from;
+	const chatId = getChatId(msg);
 	debug(`Finding a trivia question for user ${user.id}...`);
-	const question = await controller(user).getTriviaQuestion(msg.from.id);
+	const question = await controller(user).getTriviaQuestion(user.id);
 	if (!question) {
-		await bot.sendMessage(msg.chat.id, 'Game Over! 🎮');
+		await bot.sendMessage(chatId, 'Game Over! 🎮');
 		return;
 	}
 	const choices = format(question.question, question.winner)(question.answers);
-	await bot.sendMessage(msg.chat.id, question.text, {
+	await bot.sendMessage(chatId, question.text, {
 		reply_markup: {
 			inline_keyboard: choices,
 		},

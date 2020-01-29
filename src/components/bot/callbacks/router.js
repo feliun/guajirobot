@@ -21,6 +21,7 @@ module.exports = (bot, controller) => {
 		const handlerByCommand = {
 			trivia: handlers.trivia,
 			language: handlers.language,
+			replay: handlers.replay,
 		};
 		debug(`Finding router callback handler for command ${data.command}...`);
 		const handler = handlerByCommand[data.command];

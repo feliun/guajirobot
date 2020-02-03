@@ -43,6 +43,12 @@ module.exports = () => {
 			await db.updateLanguage(user.id, language);
 			return Promise.resolve();
 		};
+		
+		const uploadFile = async url => {
+			debug(`Uploading file from url ${url} from user ${user.id}...`);
+			// await s3.uploadFile(user.id, url);
+			return Promise.resolve();
+		};
 
 		const difference = (list1, list2) => list1.filter(item => !list2.some(anotherItem => anotherItem.question === item.question));
 		const random = list => list[Math.floor(Math.random() * list.length)];
@@ -66,6 +72,7 @@ module.exports = () => {
 			findMatch: audit(findMatch),
 			updateLanguage: audit(updateLanguage),
 			getTriviaQuestion: audit(getTriviaQuestion),
+			uploadFile: audit(uploadFile),
 			registerTriviaAnswer,
 		};
 	};

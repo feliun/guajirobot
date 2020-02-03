@@ -11,17 +11,17 @@ module.exports = (bot, controller) => {
 		[handlerName]: handlerConstructors[handlerName](controller, bot),
 	}), {});
 
+	const containsPhoto = input => !!input.photo;
+
 	const route = async ({ message }) => {
-		const { text } = message;
-		const handlerByText = {
+		const handlerByInput = {
 			'/start': handlers.language,
 			'/iniciar': handlers.language,
 			'/language': handlers.language,
 			'/trivia': handlers.trivia,
 			default: handlers.dialog,
 		};
-		debug(`Finding router handler for text ${text}...`);
-		const handler = handlerByText[text] || handlerByText.default;
+		const handler = containsPhoto(message) ? handlers.picture : handlerByInput[message.text] || handlerByInput.default;
 		await handler(message);
 		return Promise.resolve();
 	};

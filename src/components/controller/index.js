@@ -1,7 +1,7 @@
 const debug = require('debug')('guajirobot:controller');
 
 module.exports = () => {
-	const start = async ({ cms, db }) => user => {
+	const start = async ({ cms, db, s3 }) => user => {
 		const audit = fn => async (...args) => {
 			const payload = {
 				userId: user.id,
@@ -44,9 +44,10 @@ module.exports = () => {
 			return Promise.resolve();
 		};
 		
-		const uploadFile = async url => {
+		const uploadFile = async (url, fileId) => {
 			debug(`Uploading file from url ${url} from user ${user.id}...`);
-			// await s3.uploadFile(user.id, url);
+			const destination = `${user.id}/${fileId}`;
+			await s3.uploadFile(url, destination);
 			return Promise.resolve();
 		};
 

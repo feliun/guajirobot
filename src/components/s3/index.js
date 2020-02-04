@@ -3,7 +3,7 @@ const debug = require('debug')('guajirobot:s3');
 const AWS = require('aws-sdk');
 
 module.exports = config => {
-    const s3 = new AWS.S3();
+    const s3 = new AWS.S3(); // use AWS_PROFILE if in local - lambda should have s3 permissions
 	const start = async () => {
 
         const uploadFile = async (source, destination) => {

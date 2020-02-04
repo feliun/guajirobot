@@ -5,6 +5,17 @@ provider:
   runtime: nodejs10.x
   stage: ${opt:stage, 'dev'}
   region: ${opt:region, 'eu-west-1'}
+  iamRoleStatements:
+   - Effect: "Allow"
+     Action:
+      - "s3:PutObject"
+     Resource:
+      Fn::Join:
+        - ""
+        - - Fn::GetAtt:
+            - FilesBucket
+            - Arn
+          - "/*"
   environment:
     SERVICE_ENV: ${opt:stage, 'dev'}
     MONGO_URL: ${env:MONGO_URL}
@@ -12,6 +23,9 @@ provider:
     BOT_TOKEN: ${env:BOT_TOKEN}
     AIRTABLE_KEY: ${env:AIRTABLE_KEY}
     AIRTABLE_BASE: ${env:AIRTABLE_BASE}
+custom:
+  config:
+    s3BucketName: "guajiros-files-${opt:stage, 'dev'}"
 functions:
   process:
     handler: ./index.process
@@ -25,6 +39,7 @@ resources:
     FilesBucket:
       Type: AWS::S3::Bucket
       Properties:
+        BucketName: ${self:custom.config.s3BucketName}
         CorsConfiguration:
           CorsRules:
             -
@@ -33,15 +48,8 @@ resources:
               AllowedHeaders:
                 - '*'
               AllowedMethods:
-                - GET
                 - PUT
               MaxAge: 3000
-
-# Print out the name of the bucket that is created
-Outputs:
-  FilesBucketName:
-    Value:
-      Ref: FilesBucket
 
 plugins:
   - serverless-dotenv-plugin

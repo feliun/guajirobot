@@ -10,6 +10,9 @@ module.exports = {
 		db: process.env.MONGO_DB || 'guajirobot',
 		options: { useNewUrlParser: true },
 	},
+	s3: {
+		bucket: process.env.S3_BUCKET,
+	},
 	airtable: {
 		apiKey: process.env.AIRTABLE_KEY || 'airtablekey',
 		base: process.env.AIRTABLE_BASE || 'airtablebase',

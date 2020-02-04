@@ -20,5 +20,28 @@ functions:
           path: /guajirobot
           method: post
           cors: true
+resources:
+  Resources:
+    FilesBucket:
+      Type: AWS::S3::Bucket
+      Properties:
+        CorsConfiguration:
+          CorsRules:
+            -
+              AllowedOrigins:
+                - '*'
+              AllowedHeaders:
+                - '*'
+              AllowedMethods:
+                - GET
+                - PUT
+              MaxAge: 3000
+
+# Print out the name of the bucket that is created
+Outputs:
+  FilesBucketName:
+    Value:
+      Ref: FilesBucket
+
 plugins:
   - serverless-dotenv-plugin

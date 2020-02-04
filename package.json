@@ -11,6 +11,7 @@
     "mongodb": "^3.2.7",
     "node-telegram-bot-api": "^0.30.0",
     "remove-accents": "^0.4.2",
+    "request-promise": "^4.2.5",
     "require-all": "^3.0.0",
     "serverless-dotenv-plugin": "^2.1.1"
   },
@@ -27,6 +28,7 @@
     "docker": "docker-compose --file docker-compose.yml up -d --force-recreate --build"
   },
   "devDependencies": {
+    "aws-sdk": "^2.610.0",
     "body-parser": "^1.19.0",
     "eslint": "^4.19.1",
     "eslint-config-airbnb-base": "^11.3.2",

@@ -1,11 +1,24 @@
+const request = require('request-promise');
 const debug = require('debug')('guajirobot:s3');
+const AWS = require('aws-sdk');
 
 module.exports = config => {
+    const s3 = new AWS.S3();
 	const start = async () => {
-        
+
         const uploadFile = async (source, destination) => {
             debug(`Copying file from url ${source} to path ${destination}...`);
-            return Promise.resolve();
+            const options = {
+                uri: source,
+                encoding: null
+            };
+            const body = await request(options);
+            const result = await s3.upload({ 
+                Bucket: config.bucket,
+                Key: destination,
+                Body: body
+            }).promise();
+            return Promise.resolve(result);
         };
 
 		return {
